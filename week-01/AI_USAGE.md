@@ -17,5 +17,5 @@ ChatGPT helped me create and test the Python solution for Part 1.
 
 The Rocket-generated Next.js and TypeScript application contains generated frontend code that I did not write line by line myself.
 
-Signed: Kanatbek Alizhan  
+Signed: Alizhan Kanatbek  
 Date: 04.10.2026
