@@ -1,4 +1,4 @@
-marks = [75, 88, 49, 100, -5, 101, "abc", "", 50]
+marks = ["abc", "", "xyz"]
 
 valid_marks = []
 
