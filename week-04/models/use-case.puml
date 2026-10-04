@@ -1,0 +1,38 @@
+@startuml
+
+left to right direction
+
+actor Student
+actor Administrator
+
+rectangle "Smart Campus System" {
+    usecase "View room availability" as UC1
+    usecase "Book room" as UC2
+    usecase "Cancel own booking" as UC3
+    usecase "Block room" as UC4
+    usecase "Unblock room" as UC5
+    usecase "Review room usage" as UC6
+
+    Student --> UC1
+    Student --> UC2
+    Student --> UC3
+
+    Administrator --> UC4
+    Administrator --> UC5
+    Administrator --> UC6
+}
+
+note right of UC2
+R1: Future start, duration > 0 and <= 2 hours.
+R2: Active bookings for the same room cannot overlap.
+R3: A blocked room cannot accept a new booking.
+R4: A successful booking produces a confirmation.
+end note
+
+' Assumptions:
+' 1. A student can cancel only their own booking.
+' 2. Administrators do not book rooms.
+' 3. Authentication and registration are out of scope.
+' 4. Confirmation is part of the Book room result, not a separate user goal.
+
+@enduml

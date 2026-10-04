@@ -1,0 +1,54 @@
+@startuml
+
+class Student {
+  +studentId: String
+  +name: String
+  +bookRoom()
+  +cancelBooking()
+}
+
+class Room {
+  +roomId: String
+  +name: String
+  +capacity: int
+  +blocked: Boolean
+}
+
+class Booking {
+  +bookingId: String
+  +startTime: DateTime
+  +endTime: DateTime
+  +status: String
+  +cancel()
+}
+
+class Administrator {
+  +adminId: String
+  +name: String
+  +blockRoom()
+  +unblockRoom()
+  +reviewUsage()
+}
+
+Student "1" -- "0..*" Booking
+Room "1" -- "0..*" Booking
+Administrator ..> Room : manages
+
+note right of Booking
+R2: Active bookings for the same room
+cannot overlap.
+end note
+
+note right of Room
+R3: A blocked room cannot accept
+a new booking.
+end note
+
+' Assumptions:
+' 1. Each booking belongs to exactly one student.
+' 2. Each booking is for exactly one room.
+' 3. A student may have zero or many bookings.
+' 4. A room may have zero or many bookings.
+' 5. Administrator is modeled as a domain actor because the scenario gives explicit room-management actions.
+
+@enduml

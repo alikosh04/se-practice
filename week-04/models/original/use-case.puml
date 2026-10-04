@@ -1,0 +1,35 @@
+@startuml
+
+left to right direction
+
+actor Student
+actor Administrator
+
+rectangle "Smart Campus System" {
+    usecase "View room availability" as UC1
+    usecase "Book room" as UC2
+    usecase "Cancel own booking" as UC3
+    usecase "Block room" as UC4
+    usecase "Unblock room" as UC5
+    usecase "Review room usage" as UC6
+    usecase "Receive booking confirmation" as UC7
+
+    Student --> UC1
+    Student --> UC2
+    Student --> UC3
+
+    Administrator --> UC4
+    Administrator --> UC5
+    Administrator --> UC6
+
+    ' why: R4 - every successful booking produces a confirmation
+    UC2 ..> UC7 : <<include>>
+}
+
+' Assumptions:
+' 1. A student can cancel only their own booking.
+' 2. Administrators do not book rooms.
+' 3. Confirmation is produced only after a successful booking.
+' 4. User registration and authentication are out of scope.
+
+@enduml

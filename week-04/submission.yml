@@ -1,0 +1,53 @@
+# week-04/submission.yml — your declaration for this lab.
+#
+# Facts only. Every explanation goes in lab-report.md; nothing here repeats prose.
+# Fill every value. Check it before you push:
+#
+#     python tests/validate_submission.py
+#
+# The validator checks shape, never quality. A green run is the floor, not the grade.
+# If you cannot run Python, fill the file by hand against the comments — a malformed
+# file costs you nothing if the content is there.
+
+schema: 1
+week: "04"
+
+student:
+  name: Kanatbek Alizhan
+  student_id: 24B030279
+  github: alikosh04
+
+assistant:
+  tool: ChatGPT
+  model: GPT-5.6 Sol
+
+counts:
+  behaviour_diagram: sequence
+  stories_source: reference
+  use_cases: 6
+  change_log_rows: 7
+
+checker:
+  pass: 37
+  fail: 0
+  error: 0
+  commit: f2a0eb6
+  kept_fails: []
+
+assumptions:
+  overlap_touching_bookings: allowed
+  blocking_a_booked_room: keep-bookings
+
+traceability:
+  use_cases_not_traced: []
+  rules_not_shown: []
+
+review_findings:
+  - "Receive booking confirmation was modeled as a separate use case; it is an outcome of Book room under R4."
+  - "Student and Room used 1..* Booking multiplicities; they were corrected to 0..*."
+  - "The original sequence did not clearly validate R1, R2 and R3 before saveBooking."
+
+honesty:
+  originals_unedited: yes
+  can_explain_everything_submitted: yes
+  ai_usage_disclosed: yes
