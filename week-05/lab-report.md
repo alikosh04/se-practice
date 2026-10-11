@@ -105,17 +105,30 @@ Base input for every row unless the row says otherwise: `now=540, blocked=False,
 
 | # | Test name | Request (start, end) | What differs from the base input | Expected | AC | Result on v1 | Result on final |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | | | | | | | |
-| 2 | | | | | | | |
-| 3 | | | | | | | |
-| 4 | | | | | | | |
-| 5 | | | | | | | |
-| 6 | | | | | | | |
-| 7 | | | | | | | |
-| 8 | | | | | | | |
-| 9 | | | | | | | |
-| 10 | | | | | | | |
-| 11 | | | | | | | |
+| 1 | test_touching_end_is_allowed | (660, 720) | None | True | AC4 | PASS | PASS |
+| 2 | test_overlap_is_rejected | (630, 690) | None | False | AC4 | PASS | PASS |
+| 3 | test_blocked_room_is_rejected | (660, 720) | blocked=True | False | AC3 | PASS | PASS |
+| 4 | test_exactly_two_hours_allowed | (720, 840) | None | True | AC2 | PASS | PASS |
+| 5 | test_over_two_hours_rejected | (720, 841) | None | False | AC2 | PASS | PASS |
+| 6 | test_starts_now_rejected | (540, 570) | None | False | AC1 | PASS | PASS |
+| 7 | test_zero_length_rejected | (700, 700) | existing=[] | False | AC1 | PASS | PASS |
+| 8 | test_reversed_times_rejected | (750, 700) | existing=[] | False | AC1 | PASS | PASS |
+| 9 | test_negative_start_rejected | (-1, 60) | now=0, existing=[] | False | AC1 | PASS | PASS |
+| 10 | test_end_of_day_allowed | (1380, 1440) | existing=[] | True | AC1 | PASS | PASS |
+| 11 | test_after_end_of_day_rejected | (1400, 1441) | existing=[] | False | AC1 | PASS | PASS |
+| 12 | test_empty_existing_allowed | (700, 760) | existing=[] | True | AC4 | PASS | PASS |
+| 13 | test_multiple_existing_bookings | (740, 800) | existing has 3 bookings | False | AC4 | PASS | PASS |
+| 14 | test_existing_is_unchanged | (660, 720) | Checks list after call | True | AC5 | PASS | PASS |
+| 15 | test_inside_existing_rejected | (615, 645) | None | False | AC4 | PASS | PASS |
+| 16 | test_contains_existing_rejected | (570, 690) | None | False | AC4 | PASS | PASS |
+| 17 | test_touching_start_allowed | (570, 600) | None | True | AC4 | PASS | PASS |
+| 18 | test_returns_real_boolean | (700, 760) | existing=[], checks type | bool | AC5 | PASS | PASS |
+| 19 | test_rejected_result_is_real_boolean | (630, 690) | Checks exact False | False | AC5 | PASS | PASS |
+| 20 | test_blocked_result_is_real_boolean | (700, 760) | blocked=True, existing=[] | False | AC5 | PASS | PASS |
+| 21 | test_existing_unchanged_after_rejection | (630, 690) | existing has 2 bookings | False | AC5 | PASS | PASS |
+| 22 | test_existing_unchanged_with_multiple_bookings | (800, 860) | existing has 3 bookings | True | AC5 | PASS | PASS |
+| 23 | test_empty_existing_remains_empty | (700, 760) | existing=[] | True | AC5 | PASS | PASS |
+| 24 | test_rejected_result_has_bool_type | (630, 690) | Checks exact type | bool | AC5 | PASS | PASS |
 
 ---
 
@@ -127,8 +140,7 @@ cause column says why no change was needed.
 
 | # | Input (the full call) | Expected | Actual | Cause (quote the line) | Fix | Who proposed the fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | | | | | | |
-
+| 1 | `can_book(700, 760, 540, False, [])` | `True` | `True` | No bug found; the original code passed this case. | No fix needed | No fix proposed |
 **The debug prompt I sent, and the assistant's answer** (leave the block empty if you did not use it):
 
 ```text
@@ -141,13 +153,18 @@ cause column says why no change was needed.
 **The assistant's critique, pasted unedited:**
 
 ```text
-(paste here)
+1. No functional defects found under the stated input contract. The implementation correctly checks time boundaries, future start, maximum duration, blocked rooms, and booking overlaps.
+
+2. The condition `start < b and end > a` correctly allows bookings that touch at their endpoints. No change is needed under AC4.
+
+3. The function does not explicitly check input types. However, the contract guarantees integer times and valid existing bookings, so this is not a violation of AC1–AC5.
 ```
 
 | # | Suggestion | accept / reject | Reason — cite the AC or the contract line | Suite after the change |
 | --- | --- | --- | --- | --- |
-| 1 | | accept / reject | | |
-| 2 | | accept / reject | | |
+| 1 | Keep the implementation because no functional defects were found | accept | AC1–AC5 are satisfied; F1–F10 passed. | 24 tests OK; M10 FAIL |
+| 2 | Keep the strict overlap condition | accept | AC4 allows touching endpoints without overlap. | 24 tests OK; M10 FAIL |
+| 3 | Add explicit input type validation | reject | The contract guarantees integer times, so this is outside the required scope. | 24 tests OK; M10 FAIL |
 
 ---
 
@@ -155,8 +172,7 @@ cause column says why no change was needed.
 
 | # | What changed (the line, before → after) | Why | Evidence: the test or check that moved |
 | --- | --- | --- | --- |
-| 1 | | | |
-
+| 1 | No changes to booking.py | The first AI-generated version passed all F1–F10 functional checks. I kept the original implementation and added more tests instead. | AC1–AC5 |
 ---
 
 ## 8. Evidence — real output
@@ -166,7 +182,35 @@ cause column says why no change was needed.
 Paste the **complete** terminal output. For Python: everything `python -m unittest -v` printed.
 
 ```text
-(paste here)
+test_after_end_of_day_rejected (test_booking.BookingTests.test_after_end_of_day_rejected) ... ok
+test_blocked_result_is_real_boolean (test_booking.BookingTests.test_blocked_result_is_real_boolean) ... ok
+test_blocked_room_is_rejected (test_booking.BookingTests.test_blocked_room_is_rejected) ... ok
+test_contains_existing_rejected (test_booking.BookingTests.test_contains_existing_rejected) ... ok
+test_empty_existing_allowed (test_booking.BookingTests.test_empty_existing_allowed) ... ok
+test_empty_existing_remains_empty (test_booking.BookingTests.test_empty_existing_remains_empty) ... ok
+test_end_of_day_allowed (test_booking.BookingTests.test_end_of_day_allowed) ... ok
+test_exactly_two_hours_allowed (test_booking.BookingTests.test_exactly_two_hours_allowed) ... ok
+test_existing_is_unchanged (test_booking.BookingTests.test_existing_is_unchanged) ... ok
+test_existing_unchanged_after_rejection (test_booking.BookingTests.test_existing_unchanged_after_rejection) ... ok
+test_existing_unchanged_with_multiple_bookings (test_booking.BookingTests.test_existing_unchanged_with_multiple_bookings) ... ok
+test_inside_existing_rejected (test_booking.BookingTests.test_inside_existing_rejected) ... ok
+test_multiple_existing_bookings (test_booking.BookingTests.test_multiple_existing_bookings) ... ok
+test_negative_start_rejected (test_booking.BookingTests.test_negative_start_rejected) ... ok
+test_over_two_hours_rejected (test_booking.BookingTests.test_over_two_hours_rejected) ... ok
+test_overlap_is_rejected (test_booking.BookingTests.test_overlap_is_rejected) ... ok
+test_rejected_result_has_bool_type (test_booking.BookingTests.test_rejected_result_has_bool_type) ... ok
+test_rejected_result_is_real_boolean (test_booking.BookingTests.test_rejected_result_is_real_boolean) ... ok
+test_returns_real_boolean (test_booking.BookingTests.test_returns_real_boolean) ... ok
+test_reversed_times_rejected (test_booking.BookingTests.test_reversed_times_rejected) ... ok
+test_starts_now_rejected (test_booking.BookingTests.test_starts_now_rejected) ... ok
+test_touching_end_is_allowed (test_booking.BookingTests.test_touching_end_is_allowed) ... ok
+test_touching_start_allowed (test_booking.BookingTests.test_touching_start_allowed) ... ok
+test_zero_length_rejected (test_booking.BookingTests.test_zero_length_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.000s
+
+OK
 ```
 
 ### 8.2 The checker, final run
@@ -234,3 +278,8 @@ and why?
      side, so a booking that ends exactly when another begins was rejected." -->
 
 <!-- Write your conclusion below this line -->
+In this practice, I used ChatGPT to create a Python function called `can_book`. The function checks if a student can book a study room. It checks the start and end time, the maximum booking duration of 120 minutes, whether the room is blocked, and whether the new booking overlaps with an existing one.
+
+I learned how to check overlapping bookings using the condition `start < b and end > a`. This condition allows two bookings to touch at their endpoints without overlapping. For example, one booking can end at 600 and another can start at 600.
+
+I created 24 unit tests, and all of them passed. The checker detected nine faulty implementations, but M10 was not detected by my tests. I tried adding more tests for Boolean results and unchanged input lists. This practice showed me that AI can help write code, but I still need to check its suggestions, choose useful test cases, and understand the results myself.
