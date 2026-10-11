@@ -9,7 +9,7 @@
   - Comments like this one are ignored by the word counter. Delete them or leave them.
 -->
 
-**Topic:** 1.(write here)
+**Topic:** 1.(Connected Development Teams)
 
 <!-- Exactly one of 1.1 … 1.10, e.g.  **Topic:** 1.4  -->
 
@@ -20,17 +20,18 @@
 <!-- 100–150 words, labels included. One small scenario, used in every prompt and in your
      whole answer. Anything fictional is labelled in Assumptions. -->
 
-**Question:** (write here — the question of your topic, in your own words)
+**Question:** (How can a small student development team work together effectively using GitHub?)
 
-**Users:** (write here)
+**Users:** (Four university students who are developing a study room booking application.)
 
-**Problem:** (write here)
+**Problem:** (The students work on different parts of the application. Sometimes they change the same files, which can cause conflicts and mistakes. They need a simple way to organize teamwork.)
 
-**Constraints:** (write here — two constraints)
+**Constraints:** (1. The team has only four weeks to finish the project.
+2.All team members have limited experience with GitHub and software development.)
 
-**Risk:** (write here — one important failure or misuse risk)
+**Risk:** (Two students may change the same code and accidentally introduce errors when merging their work.)
 
-**Assumptions:** (write here — every fictional detail, labelled as fictional)
+**Assumptions:** (This is a fictional university project. The team consists of four students. They use GitHub and VS Code. They communicate through Telegram and have one meeting every week. The application allows students to view available rooms and book them.)
 
 ## 2. Analysis
 
