@@ -29,8 +29,39 @@ grader find your answers by them. Add rows to any table; never remove its header
 **The assistant's plan, pasted unedited:**
 
 ```text
-(paste here)
-```
+1. Check that 0 <= start < end <= 1440 and start > now.
+   Return False if the requested time is invalid (AC1).
+
+2. Check that the duration end - start is at most 120 minutes.
+   Return False if it is longer (AC2).
+
+3. Check whether the room is blocked.
+   Return False if blocked is True (AC3).
+
+4. Check every existing booking (a, b).
+   If start < b and end > a, the intervals overlap.
+   Return False if any overlap is found (AC4).
+
+5. Return True if all checks pass.
+   Do not modify the existing bookings list (AC5).
+
+Assumptions:
+- now is valid.
+- blocked is Boolean.
+- existing contains valid booking intervals.
+
+Boundary cases:
+- A booking starts exactly at now.
+- A booking lasts exactly 120 minutes.
+- A booking lasts 121 minutes.
+- Two bookings touch at their endpoints.
+- A booking overlaps another booking.
+- A booking has zero or negative duration.
+- A booking ends exactly at minute 1440.
+- A booking starts before minute 0.
+- The room is blocked.
+- The existing bookings list is empty.
+- The existing bookings list remains unchanged. ```
 
 **What the plan invented or changed.** One row for every rule in the plan that is not in the
 contract or in AC1–AC5, or that says something different from them. If you found none, write one
@@ -38,11 +69,11 @@ row saying which lines of the plan you checked against which AC.
 
 | # | What the plan said | What the contract or the AC says | What I did |
 | --- | --- | --- | --- |
-| 1 | | | |
+| 1 | No additional rules were introduced. | Checked steps 1–5 against AC1–AC5. | Kept the plan unchanged. |
 
 **Boundary cases the assistant suggested that I kept as tests:**
 
--
+- Touching endpoints, exactly 120 minutes, 121 minutes, starts now, zero-length interval, day bounds, blocked room, empty existing bookings, and unchanged input.
 
 ---
 
