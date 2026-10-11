@@ -75,11 +75,11 @@
 <!-- Written BEFORE you run Prompt A. Five points, your own words, numbered. These are the
      "five points" you paste into Prompt A. -->
 
-1. (write here)
-2. (write here)
-3. (write here)
-4. (write here)
-5. (write here)
+1. (Each student should have their own tasks in the project.)
+2. (We should use GitHub to save and share our code.)
+3. (Each student should work in a separate Git branch.)
+4. (The team should communicate through Telegram and discuss problems)
+5. (We should test the application before finishing the project)
 
 ## 8. Appendix B — AI exchanges
 
